@@ -1,0 +1,58 @@
+service: my-todo-app
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  vpc:
+    securityGroupIds:
+      - sg-0c2224406d33221e0  # RDS Security Group
+    subnetIds:
+      - subnet-03cb24a23e6801e9f
+      - subnet-0e3fb7d94151376e2
+      - subnet-0bf65ae8d24011ae2
+      - subnet-05d1bab4216a2dccf
+      - subnet-0c84c89ccf31e64d4
+      - subnet-0a2e0008338f37ed6
+  environment:
+    DB_HOST: todo-db.cmhuk6qq6f7c.us-east-1.rds.amazonaws.com
+    DB_USER: admin_1234
+    DB_PASSWORD: admin_1234
+    DB_NAME: postgres
+
+functions:
+  createTodo:
+    handler: createTodo.createTodo
+    events:
+      - http:
+          path: todos
+          method: post
+          cors: true
+
+  getTodos:
+    handler: getTodos.getTodos
+    events:
+      - http:
+          path: todos
+          method: get
+          cors: true
+
+  updateTodo:
+    handler: updateTodo.updateTodo
+    events:
+      - http:
+          path: todos
+          method: put
+          cors: true
+
+  deleteTodo:
+    handler: deleteTodo.deleteTodo
+    events:
+      - http:
+          path: todos
+          method: delete
+          cors: true
+
+
+
+
